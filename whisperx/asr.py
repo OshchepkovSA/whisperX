@@ -190,7 +190,6 @@ class FasterWhisperPipeline(Pipeline):
             onset=self._vad_params["vad_onset"],
             offset=self._vad_params["vad_offset"],
         )
-        print(vad_segments)
         if self.tokenizer is None:
             language = language or self.detect_language(audio)
             task = task or "transcribe"
@@ -240,7 +239,7 @@ class FasterWhisperPipeline(Pipeline):
         if self.suppress_numerals:
             self.options = self.options._replace(suppress_tokens=previous_suppress_tokens)
 
-        return {"segments": segments, "language": language}
+        return {"segments": segments, "language": language, "vad_segments": vad_segments}
 
 
     def detect_language(self, audio: np.ndarray):
