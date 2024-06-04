@@ -220,8 +220,8 @@ class FasterWhisperPipeline(Pipeline):
 
         vad_segments = []
         for chunk in range(int(len_audio / (chunk_size * SAMPLE_RATE)) + 1):
-            start = float(chunk*chunk_size*SAMPLE_RATE)
-            end = float(min(len_audio, (chunk+1)*(chunk_size * SAMPLE_RATE)))
+            start = float(chunk*chunk_size)
+            end = float(min(len_audio/SAMPLE_RATE , (chunk+1)*(chunk_size)))
             segments = [(float(start), float(end))]
             vad_segments.append({"start": start, "end": end, "segments": segments})
         
