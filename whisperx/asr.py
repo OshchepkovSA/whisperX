@@ -184,6 +184,7 @@ class FasterWhisperPipeline(Pipeline):
                 yield {'inputs': audio[f1:f2]}
 
         vad_segments = self.vad_model({"waveform": torch.from_numpy(audio).unsqueeze(0), "sample_rate": SAMPLE_RATE})
+        vad_segments_bebore = vad_segments
         vad_segments = merge_chunks(
             vad_segments,
             chunk_size,
@@ -239,7 +240,10 @@ class FasterWhisperPipeline(Pipeline):
         if self.suppress_numerals:
             self.options = self.options._replace(suppress_tokens=previous_suppress_tokens)
 
-        return {"segments": segments, "language": language, "vad_segments": vad_segments}
+        return {"segments": segments, 
+                "language": language,
+                "vad_segments_bebore": vad_segments_bebore,
+                "vad_segments": vad_segments}
 
 
     def detect_language(self, audio: np.ndarray):
